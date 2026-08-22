@@ -1,0 +1,81 @@
+arrival = [3, 2, 3, 1, 4, 5]
+burst = [1, 4, 6, 3, 2, 1]
+
+time = 0
+total_wt = 0
+total_tat = 0
+
+# FCFS order: P4, P2, P1, P3, P5, P6
+order = [3, 1, 0, 2, 4, 5]
+
+print("         FCFS  ")
+print("Process\tAT\tBT\tCT\tTAT\tWT")
+
+for i in order:
+
+    if time < arrival[i]:
+        time = arrival[i]
+
+    ct = time + burst[i]
+    tat = ct - arrival[i]
+    wt = tat - burst[i]
+
+    print("P" + str(i + 1), "\t", arrival[i], "\t", burst[i],
+          "\t", ct, "\t", tat, "\t", wt)
+
+    total_wt += wt
+    total_tat += tat
+
+    time = ct
+
+print("Average Waiting Time:", total_wt / 6)
+print("Average Turnaround Time:", total_tat / 6)
+
+
+# SJF (Non-Preemptive)
+
+n = len(arrival)
+completed = [False] * n
+
+time = 0
+total_wt = 0
+total_tat = 0
+completed_count = 0
+
+print("\n           SJF       ")
+print("Process\tAT\tBT\tCT\tTAT\tWT")
+
+while completed_count < n:
+
+    shortest = -1
+    min_burst = float('inf')
+
+
+    for i in range(n):
+        if not completed[i] and arrival[i] <= time:
+            if burst[i] < min_burst:
+                min_burst = burst[i]
+                shortest = i
+
+    if shortest == -1:
+        time += 1
+        continue
+
+    i = shortest
+
+    ct = time + burst[i]
+    tat = ct - arrival[i]
+    wt = tat - burst[i]
+
+    print("P" + str(i + 1), "\t", arrival[i], "\t", burst[i],
+          "\t", ct, "\t", tat, "\t", wt)
+
+    total_wt += wt
+    total_tat += tat
+
+    time = ct
+    completed[i] = True
+    completed_count += 1
+
+print("Average Waiting Time:", total_wt / n)
+print("Average Turnaround Time:", total_tat / n)
