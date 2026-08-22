@@ -1,0 +1,59 @@
+arrival = [0,1,2,3,4]
+burst = [5,3,1,2,3]
+
+n = len(arrival)
+
+remaining = burst.copy()
+completion = [0] * n
+
+time = 0
+completed = 0
+
+print("         SJF PREEMPTIVE        ")
+
+while completed < n:
+
+    shortest = -1
+    min_remaining = float('inf')
+
+    for i in range(n):
+        if arrival[i] <= time and remaining[i] > 0:
+
+            if remaining[i] < min_remaining:
+                min_remaining = remaining[i]
+                shortest = i
+
+    if shortest == -1:
+        time += 1
+        continue
+
+    remaining[shortest] -= 1
+    time += 1
+
+    if remaining[shortest] == 0:
+        completion[shortest] = time
+        completed += 1
+
+
+total_wt = 0
+total_tat = 0
+
+print("Process\tAT\tBT\tCT\tTAT\tWT")
+
+for i in range(n):
+
+    tat = completion[i] - arrival[i]
+    wt = tat - burst[i]
+
+    print("P" + str(i + 1), "\t",
+          arrival[i], "\t",
+          burst[i], "\t",
+          completion[i], "\t",
+          tat, "\t",
+          wt)
+
+    total_wt += wt
+    total_tat += tat
+
+print("\nAverage Waiting Time:", total_wt / n)
+print("Average Turnaround Time:", total_tat / n)
