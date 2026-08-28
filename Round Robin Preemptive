@@ -1,0 +1,51 @@
+# Round Robin Preemptive Scheduling
+
+process = ["P1", "P2", "P3", "P4","p5","p6"]
+arrival = [0, 1, 2, 3,4,4]
+burst = [7,4,15,11,20,9]
+
+time_quantum = 5
+n = len(process)
+
+remaining = burst.copy()
+completion = [0] * n
+
+time = 0
+completed = 0
+
+while completed < n:
+
+    for i in range(n):
+
+        if arrival[i] <= time and remaining[i] > 0:
+
+            if remaining[i] > time_quantum:
+                time += time_quantum
+                remaining[i] -= time_quantum
+
+            else:
+                time += remaining[i]
+                remaining[i] = 0
+                completion[i] = time
+                completed += 1
+
+
+turnaround = [0] * n
+waiting = [0] * n
+
+for i in range(n):
+    turnaround[i] = completion[i] - arrival[i]
+    waiting[i] = turnaround[i] - burst[i]
+
+print("        ROUND ROBIN PREEMPTIVE     ")
+print("Process\tAT\tBT\tCT\tTAT\tWT")
+
+for i in range(n):
+    print(process[i], "\t", arrival[i], "\t", burst[i],
+          "\t", completion[i], "\t", turnaround[i], "\t", waiting[i])
+
+print("\nAverage Waiting Time:",
+      sum(waiting) / n)
+
+print("Average Turnaround Time:",
+      sum(turnaround) / n)
