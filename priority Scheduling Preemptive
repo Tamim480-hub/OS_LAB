@@ -1,0 +1,66 @@
+process = ["P1", "P2", "P3", "P4"]
+
+arrival = [0, 1, 2, 3]
+burst = [7, 4, 2, 5]
+priority = [3, 1, 4, 2]
+
+n = len(process)
+
+remaining = burst.copy()
+completion = [0] * n
+waiting = [0] * n
+turnaround = [0] * n
+
+time = 0
+completed = 0
+
+while completed < n:
+
+    # Find available process with highest priority
+    idx = -1
+    best_priority = 999
+
+    for i in range(n):
+        if arrival[i] <= time and remaining[i] > 0:
+            if priority[i] < best_priority:
+                best_priority = priority[i]
+                idx = i
+
+    # If no process has arrived
+    if idx == -1:
+        time += 1
+        continue
+
+    # Execute for 1 unit (preemptive)
+    remaining[idx] -= 1
+    time += 1
+
+    # Process completed
+    if remaining[idx] == 0:
+        completion[idx] = time
+        completed += 1
+
+
+# Calculate Turnaround Time and Waiting Time
+for i in range(n):
+    turnaround[i] = completion[i] - arrival[i]
+    waiting[i] = turnaround[i] - burst[i]
+
+
+# Display result
+print("Process\tAT\tBT\tPriority\tCT\tTAT\tWT")
+
+for i in range(n):
+    print(process[i], "\t",
+          arrival[i], "\t",
+          burst[i], "\t",
+          priority[i], "\t\t",
+          completion[i], "\t",
+          turnaround[i], "\t",
+          waiting[i])
+
+print("\nAverage Waiting Time:",
+      sum(waiting) / n)
+
+print("Average Turnaround Time:",
+      sum(turnaround) / n)
