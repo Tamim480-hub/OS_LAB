@@ -1,0 +1,17 @@
+requests = [0, 41, 30, 100, 62, 51, 20]
+
+head = 70
+
+total_seek = 0
+current = head
+
+print("Seek Sequence:", end=" ")
+print(current, end="")
+
+for request in requests:
+    seek = abs(current - request)
+    total_seek += seek
+    current = request
+    print(" ->", current, end="")
+
+print("\nTotal Seek Movement:", total_seek)
