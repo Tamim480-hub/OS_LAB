@@ -1,0 +1,32 @@
+requests = [0, 41, 30, 100, 62, 51, 20]
+
+head = 70
+direction = "right"
+total_seek = 0
+current = head
+
+print("Direction:", direction)
+print("Total number of request:", len(requests))
+print("Seek Sequence:", end=" ")
+print(current, end=" ")
+
+right = []
+
+for request in requests:
+    if request > head:
+        right.append(request)
+
+right.sort()
+
+for request in right:
+    seek = abs(current - request)
+    total_seek += seek
+    current = request
+    print("->", current, end=" ")
+
+seek = abs(current - 200)
+total_seek += seek
+current = 200
+print("->", current, end=" ")
+
+print("\nTotal seek:", total_seek)
