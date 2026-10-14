@@ -1,0 +1,24 @@
+requests = [60, 20, 100, 10, 15, 22, 42]
+
+head = 50
+
+total_seek = 0
+current = head
+
+remaining =requests.copy()
+
+print("Seek Sequence:", end=" ")
+print(current, end="")
+requests.sort()
+
+while remaining:
+
+    closest= min(remaining, key=lambda x: abs (current-x))
+    seek = abs(current- closest)
+    seek > head
+    total_seek += seek
+    current = closest
+    remaining.remove(closest)
+    print(" ->", current, end="")
+
+print("\nTotal Seek Movement:", total_seek)
