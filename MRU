@@ -1,0 +1,49 @@
+pages = [1, 2, 3, 4, 1, 2, 3, 1]
+frames = 3
+
+memory = []
+page_hits = 0
+page_faults = 0
+
+print("Page\tFrames\t\tStatus")
+print("-" * 40)
+
+
+memory = []
+page_hits = 0
+page_faults = 0
+
+print("Page\tFrames\t\tStatus")
+print("-" * 40)
+
+for page in pages:
+
+    if page in memory:
+        page_hits += 1
+        memory.remove(page)
+        memory.append(page)
+        status = "HIT"
+
+    else:
+        page_faults += 1
+        status = "FAULT"
+
+        if len(memory) < frames:
+            memory.append(page)
+        else:
+            memory.pop()
+            memory.append(page)
+
+    print(f"{page}\t{memory}\t{status}")
+
+total_pages = len(pages)
+
+hit_ratio = page_hits / total_pages
+fault_ratio = page_faults / total_pages
+
+print("-" * 40)
+print("Total Page Requests:", total_pages)
+print("Total Page Hits    :", page_hits)
+print("Total Page Faults  :", page_faults)
+print("Hit Ratio (%)      :", round(hit_ratio * 100, 2), "%")
+print("Fault Ratio (%)    :", round(fault_ratio * 100, 2), "%")
